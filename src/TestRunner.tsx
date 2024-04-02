@@ -26,7 +26,7 @@ export const TestExtensionRunner = <ExtensionType extends Extension<StateType, C
         setNode(new Date());
     }
 
-    async function delayedTest(test, delaySeconds) {
+    async function delayedTest(test: any, delaySeconds: number) {
         await new Promise(f => setTimeout(f, delaySeconds * 1000));
         return test();
     }
@@ -39,12 +39,14 @@ export const TestExtensionRunner = <ExtensionType extends Extension<StateType, C
         refresh();
 
         const beforePromptResponse: Partial<ExtensionResponse<StateType>> = await extension.beforePrompt({
+            promptForId: "2",
             anonymizedId: "0", content: "Hello, this is what happens when a human sends a message, but before it's sent to the model.", isBot: false
         });
         console.assert(beforePromptResponse.error == null);
         refresh();
 
         const afterPromptResponse: Partial<ExtensionResponse<StateType>> = await extension.afterResponse({
+            promptForId: null,
             anonymizedId: "2",
             content: "Why yes hello, and this is what happens when a bot sends a response.",
             isBot: true});
@@ -52,7 +54,7 @@ export const TestExtensionRunner = <ExtensionType extends Extension<StateType, C
         refresh();
 
         const afterDelayedThing: Partial<ExtensionResponse<StateType>> = await delayedTest(() => extension.beforePrompt({
-            anonymizedId: "0", content: "Hello, and now the human is prompting again.", isBot: false
+            anonymizedId: "0", content: "Hello, and now the human is prompting again.", isBot: false, promptForId: null
         }), 5);
         console.assert(afterDelayedThing.error == null);
         refresh();
