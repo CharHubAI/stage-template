@@ -8,38 +8,38 @@ project_name: "Extension Template"
 tagline: "A base template for all extensions."
 
 # A longer explanation. Supports Markdown format.
-creator_notes: "# Extension Template for Chub
-
-This is a template extension that does nothing, to be used as a base
-when developing extensions. Please clone it [from GitHub](https://github.com/CharHubAI/extension-template) to use as a template.
-
-You'll need node@21.7.1 and yarn installed.
-Then, to get started:
-
-``` 
-git clone https://github.com/CharHubAI/extension-template
-cd extension-template
-yarn install
-yarn dev
-```
-
-The class you'll need to fill out and implement is in src/ChubExtension.tsx.
-
-When running locally, as there is no chat UI/running chat, src/TestRunner.tsx is run. This only runs in development.
-Please modify it to test whatever you need.
-
-This project uses GitHub actions to update the extension in Chub on 
-commits to the main branch. For your project to do this,
-you'll need to get an extension auth token from [the api](https://api.chub.ai/openapi/swagger#/User%20Account/create_projects_token_account_tokens_projects_post).
-
-Then in the GitHub project, go to Settings -> Secrets and Variables -> Actions ->
-Repository secrets -> New Repository Secret. Add the token with the name \"CHUB_AUTH_TOKEN\".
-  
+creator_notes: "This is a template extension that does nothing, to be used as a base\nwhen developing extensions. Please clone it [from GitHub](https://github.com/CharHubAI/extension-template) to use as a template.\n\nYou'll need node@21.7.1 and yarn installed.\nThen, to get started:\n\n
+```\n 
+git clone https://github.com/CharHubAI/extension-template\n
+cd extension-template\n
+yarn install\n
+yarn dev\n
+```\n
+\n
+The class you'll need to fill out and implement is in src/ChubExtension.tsx.\n
+\n
+When running locally, as there is no chat UI/running chat, src/TestRunner.tsx is run. This only runs in development.\n
+Please modify it to test whatever you need.\n
+\n
+This project uses GitHub actions to update the extension in Chub on \n
+commits to the main branch. For your project to do this,\n
+you'll need to get an extension auth token from [the api](https://api.chub.ai/openapi/swagger#/User%20Account/create_projects_token_account_tokens_projects_post).\n
+\n
+Then in the GitHub project, go to Settings -> Secrets and Variables -> Actions ->\n
+Repository secrets -> New Repository Secret. Add the token with the name \"CHUB_AUTH_TOKEN\".\n
+  \n
   The use of an IDE like Intellij is very strongly recommended.
 "
 
 # 'PUBLIC', 'PRIVATE', or 'UNLISTED'.
 visibility: 'PUBLIC'
+
+# 'ADJACENT', 'INLINE', or 'NONE'
+# 'ADJACENT' is default. The frame will display on the side of the
+#   chat on desktop and above/in the top half of the chat on mobile.
+# 'INLINE' will display it inside the message box of the last message.
+# 'NONE' will not display, only run.
+position: 'ADJACENT'
 
 # Self-explanatory.
 tags:
