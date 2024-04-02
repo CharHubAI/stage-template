@@ -1,0 +1,5 @@
+This software is not open source.
+
+It is source available.
+
+Any use outside of the context of Chub AI Extensions is not permitted.

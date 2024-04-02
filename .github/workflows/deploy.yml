@@ -1,0 +1,138 @@
+name: Deploy Built Extension
+
+on:
+  push:
+    branches:
+      - main  # Or any branch you use for releases
+      - master
+
+permissions:
+  contents: write
+  issues: read
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '21.7.1'
+
+      - name: Confirm CHUB_AUTH_TOKEN is set
+        env:
+          CHUB_AUTH_TOKEN: ${{ secrets.CHUB_AUTH_TOKEN }}
+        run: |
+          if [ "${{ secrets.CHUB_AUTH_TOKEN }}" == "" ] || [ "${{ secrets.CHUB_AUTH_TOKEN }}" == "null" ]; then
+             echo "Your CHUB_AUTH_TOKEN secret is not set for this project. Cannot proceed."
+             exit 1
+          fi
+
+      - name: Get or Make Extension ID
+        env:
+          CHUB_AUTH_TOKEN: ${{ secrets.CHUB_AUTH_TOKEN }}
+          EXTENSION_ID: ${{ secrets.EXTENSION_ID }}
+        run: |
+          mkdir -p public/       
+          touch public/chub_meta.yaml  
+          if grep -q "github_path:" public/chub_meta.yaml; then
+            echo "Repo path already in metadata file."
+          else
+            echo "Writing github path 'https://github.com/${{ github.repository }}' to metadata file."
+            echo "github_path: 'https://github.com/${{ github.repository }}'" >> public/chub_meta.yaml
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git add public/chub_meta.yaml
+            git commit -m "Add github_path to chub_meta.yaml" || true
+            git push
+          fi
+          if [ "${{ secrets.EXTENSION_ID }}" == "" ]; then
+             echo "Secret EXTENSION_ID does not exist; attempting to read from file"
+             EXTENSION_ID=$(grep '^extension_id:' public/chub_meta.yaml | cut -d ':' -f2 | tr -d " '\"")
+             if [ "${EXTENSION_ID}" == "" ]; then
+                echo "Extension ID not present in public/chub_meta.yaml extension_id field either. Creating new project."
+                sudo apt-get install jq
+                EXTENSION_ID=""
+                curl -H "CH-API-KEY: ${{ secrets.CHUB_AUTH_TOKEN }}" -H "Content-Type: application/json" --request POST --data '{"name":"${{ github.event.repository.name }}"}'  https://api.chub.ai/extensions  -o creation.json
+                EXTENSION_ID=$(jq -r '.id_v2' creation.json)
+                if [ "${EXTENSION_ID}" == "" ] || [ "${EXTENSION_ID}" == "null" ]; then
+                  echo "Extension ID creation failed; is your CHUB_AUTH_TOKEN secret set for this project?"
+                  exit 1
+                fi
+                echo "extension_id: '${EXTENSION_ID}'" >> public/chub_meta.yaml
+                git config --local user.email "action@github.com"
+                git config --local user.name "GitHub Action"
+                git add public/chub_meta.yaml
+                git commit -m "Add new Extension ID to chub_meta.yaml" || true
+                git push
+             else
+                echo "Extension ID found in public/chub_meta.yaml."
+             fi
+          else
+             EXTENSION_ID=${{ secrets.EXTENSION_ID }}
+          fi
+          echo "EXTENSION_ID=${EXTENSION_ID}" >> $GITHUB_ENV
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build
+        run: yarn build
+
+      - name: Zip the build folder
+        run: cd dist && zip -r ../build.zip * && cd ../
+
+      - name: Upload the build
+        env:
+          CHUB_AUTH_TOKEN: ${{ secrets.CHUB_AUTH_TOKEN }}
+        run: |    
+          curl -H "CH-API-KEY: ${{ secrets.CHUB_AUTH_TOKEN }}" -F "file=@build.zip" https://api.chub.ai/extension/${{ env.EXTENSION_ID }}/upload
+
+      # These steps are just for if you care about trying to use the UI editor and keeping them on the same version.
+      # Feel free to remove. It's experimental at best.
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Send Files to API
+        env:
+          CHUB_AUTH_TOKEN: ${{ secrets.CHUB_AUTH_TOKEN }}
+        run: |
+          python -m pip install requests
+          python - <<EOF
+          import os
+          import requests
+          import logging
+          
+          api_url = "https://api.chub.ai/extension/${{ env.EXTENSION_ID }}/files"
+          skip_dirs = {'.idea', '.github', 'dist', 'node_modules', '.git'}
+          files_body = {'delete_ids': [-1], 'update_ids': {}, 'create_ids': []}
+          
+          def build_files(directory):
+              for root, dirs, files in os.walk(directory):
+                  dirs[:] = [dir for dir in dirs if dir not in skip_dirs]
+                  for file in files:
+                      file_path = os.path.join(root, file)
+                      try:
+                        directory_path = os.path.dirname(file_path)  
+                        file_name = os.path.basename(file_path)   
+                        if file_name.endswith(('.png', '.jpg', '.jpeg', '.gif', '.exe', '.zip')):
+                            continue
+                        if not directory_path.endswith('/'):
+                          directory_path += '/'
+                        file_body = {'file_name': file_name, 
+                              'id': 0, 'file_path': directory_path, 'mime_type': '', 'file_content': ''}
+                        with open(file_path, 'r') as f:
+                            file_body['file_content'] = f.read()
+                        files_body['create_ids'].append(file_body)
+                      except Exception as ex:
+                          logging.error(f"Skipping botched file {file_path}. Error: {ex}")
+          
+          build_files('.')
+          response = requests.post(api_url, json=files_body, headers={
+                'content-type': 'application/json',
+                'CH-API-KEY': '${{ secrets.CHUB_AUTH_TOKEN }}'
+            })
+          EOF

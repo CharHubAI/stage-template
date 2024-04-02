@@ -1,0 +1,249 @@
+{
+  "users": {
+    "0": {
+      "anonymizedId": "1",
+      "name": "You",
+      "isRemoved": false,
+      "chatProfile": "Doesn't really matter, does it?"
+    }
+  },
+  "characters": {
+    "1": {
+      "anonymizedId": "1",
+      "name": "Janessa",
+      "isRemoved": false,
+      "description": "Janessa is 37 years old, and that's completely fine.",
+      "example_dialogs": "Hi! What's up?",
+      "personality": "Cheerful, normal, helpful",
+      "first_message": "How are you? What's the meaning of life?",
+      "scenario": "You're having a coffee with her at work.",
+      "tavern_personality": "",
+      "system_prompt": "",
+      "post_history_instructions": "",
+      "alternate_greetings": [],
+      "partial_extensions": {
+        "chub": {
+          "background_image": null,
+          "expressions": {
+            "expressions": {
+              "admiration": "https://lfs.charhub.io/lfs/88/emotions/2/admiration.png",
+              "amusement": "https://lfs.charhub.io/lfs/88/emotions/2/amusement.png",
+              "anger": "https://lfs.charhub.io/lfs/88/emotions/2/anger.png",
+              "annoyance": "https://lfs.charhub.io/lfs/88/emotions/2/annoyance.png",
+              "approval": "https://lfs.charhub.io/lfs/88/emotions/2/approval.png",
+              "caring": "https://lfs.charhub.io/lfs/88/emotions/2/caring.png",
+              "confusion": "https://lfs.charhub.io/lfs/88/emotions/2/confusion.png",
+              "curiosity": "https://lfs.charhub.io/lfs/88/emotions/2/curiosity.png",
+              "desire": "https://lfs.charhub.io/lfs/88/emotions/2/desire.png",
+              "disappointment": "https://lfs.charhub.io/lfs/88/emotions/2/disappointment.png",
+              "disapproval": "https://lfs.charhub.io/lfs/88/emotions/2/disapproval.png",
+              "disgust": "https://lfs.charhub.io/lfs/88/emotions/2/disgust.png",
+              "embarrassment": "https://lfs.charhub.io/lfs/88/emotions/2/embarrassment.png",
+              "excitement": "https://lfs.charhub.io/lfs/88/emotions/2/excitement.png",
+              "fear": "https://lfs.charhub.io/lfs/88/emotions/2/fear.png",
+              "gratitude": "https://lfs.charhub.io/lfs/88/emotions/2/gratitude.png",
+              "grief": "https://lfs.charhub.io/lfs/88/emotions/2/grief.png",
+              "joy": "https://lfs.charhub.io/lfs/88/emotions/2/joy.png",
+              "love": "https://lfs.charhub.io/lfs/88/emotions/2/love.png",
+              "nervousness": "https://lfs.charhub.io/lfs/88/emotions/2/nervousness.png",
+              "optimism": "https://lfs.charhub.io/lfs/88/emotions/2/optimism.png",
+              "pride": "https://lfs.charhub.io/lfs/88/emotions/2/pride.png",
+              "realization": "https://lfs.charhub.io/lfs/88/emotions/2/realization.png",
+              "relief": "https://lfs.charhub.io/lfs/88/emotions/2/relief.png",
+              "remorse": "https://lfs.charhub.io/lfs/88/emotions/2/remorse.png",
+              "sadness": "https://lfs.charhub.io/lfs/88/emotions/2/sadness.png",
+              "surprise": "https://lfs.charhub.io/lfs/88/emotions/2/surprise.png",
+              "neutral": "https://lfs.charhub.io/lfs/88/emotions/2/neutral.png"
+            }
+          }
+        }
+      }
+    },
+    "2": {
+      "anonymizedId": "1",
+      "name": "",
+      "isRemoved": true,
+      "description": "",
+      "example_dialogs": "",
+      "personality": "",
+      "first_message": "",
+      "scenario": "",
+      "tavern_personality": "",
+      "system_prompt": "",
+      "post_history_instructions": "",
+      "alternate_greetings": [],
+      "partial_extensions": {
+        "chub": {
+          "background_image": null,
+          "expressions": {
+            "expressions": {
+              "admiration": "https://lfs.charhub.io/lfs/88/emotions/2/admiration.png",
+              "amusement": "https://lfs.charhub.io/lfs/88/emotions/2/amusement.png",
+              "anger": "https://lfs.charhub.io/lfs/88/emotions/2/anger.png",
+              "annoyance": "https://lfs.charhub.io/lfs/88/emotions/2/annoyance.png",
+              "approval": "https://lfs.charhub.io/lfs/88/emotions/2/approval.png",
+              "caring": "https://lfs.charhub.io/lfs/88/emotions/2/caring.png",
+              "confusion": "https://lfs.charhub.io/lfs/88/emotions/2/confusion.png",
+              "curiosity": "https://lfs.charhub.io/lfs/88/emotions/2/curiosity.png",
+              "desire": "https://lfs.charhub.io/lfs/88/emotions/2/desire.png",
+              "disappointment": "https://lfs.charhub.io/lfs/88/emotions/2/disappointment.png",
+              "disapproval": "https://lfs.charhub.io/lfs/88/emotions/2/disapproval.png",
+              "disgust": "https://lfs.charhub.io/lfs/88/emotions/2/disgust.png",
+              "embarrassment": "https://lfs.charhub.io/lfs/88/emotions/2/embarrassment.png",
+              "excitement": "https://lfs.charhub.io/lfs/88/emotions/2/excitement.png",
+              "fear": "https://lfs.charhub.io/lfs/88/emotions/2/fear.png",
+              "gratitude": "https://lfs.charhub.io/lfs/88/emotions/2/gratitude.png",
+              "grief": "https://lfs.charhub.io/lfs/88/emotions/2/grief.png",
+              "joy": "https://lfs.charhub.io/lfs/88/emotions/2/joy.png",
+              "love": "https://lfs.charhub.io/lfs/88/emotions/2/love.png",
+              "nervousness": "https://lfs.charhub.io/lfs/88/emotions/2/nervousness.png",
+              "optimism": "https://lfs.charhub.io/lfs/88/emotions/2/optimism.png",
+              "pride": "https://lfs.charhub.io/lfs/88/emotions/2/pride.png",
+              "realization": "https://lfs.charhub.io/lfs/88/emotions/2/realization.png",
+              "relief": "https://lfs.charhub.io/lfs/88/emotions/2/relief.png",
+              "remorse": "https://lfs.charhub.io/lfs/88/emotions/2/remorse.png",
+              "sadness": "https://lfs.charhub.io/lfs/88/emotions/2/sadness.png",
+              "surprise": "https://lfs.charhub.io/lfs/88/emotions/2/surprise.png",
+              "neutral": "https://lfs.charhub.io/lfs/88/emotions/2/neutral.png"
+            }
+          }
+        }
+      }
+    },
+    "18": {
+      "anonymizedId": "1",
+      "name": "",
+      "isRemoved": false,
+      "description": "",
+      "example_dialogs": "",
+      "personality": "",
+      "first_message": "",
+      "scenario": "",
+      "tavern_personality": "",
+      "system_prompt": "",
+      "post_history_instructions": "",
+      "alternate_greetings": [],
+      "partial_extensions": {
+        "chub": {
+          "background_image": null,
+          "expressions": null
+        }
+      }
+    },
+    "3": {
+      "anonymizedId": "1",
+      "name": "",
+      "isRemoved": false,
+      "description": "",
+      "example_dialogs": "",
+      "personality": "",
+      "first_message": "",
+      "scenario": "",
+      "tavern_personality": "",
+      "system_prompt": "",
+      "post_history_instructions": "",
+      "alternate_greetings": [],
+      "partial_extensions": {
+        "chub": {
+          "background_image": null,
+          "expressions": {
+            "expressions": {
+              "admiration": "https://lfs.charhub.io/lfs/88/emotions/2/admiration.png",
+              "amusement": "https://lfs.charhub.io/lfs/88/emotions/2/amusement.png",
+              "anger": "https://lfs.charhub.io/lfs/88/emotions/2/anger.png",
+              "annoyance": "https://lfs.charhub.io/lfs/88/emotions/2/annoyance.png",
+              "approval": "https://lfs.charhub.io/lfs/88/emotions/2/approval.png",
+              "caring": "https://lfs.charhub.io/lfs/88/emotions/2/caring.png",
+              "confusion": "https://lfs.charhub.io/lfs/88/emotions/2/confusion.png",
+              "curiosity": "https://lfs.charhub.io/lfs/88/emotions/2/curiosity.png",
+              "desire": "https://lfs.charhub.io/lfs/88/emotions/2/desire.png",
+              "disappointment": "https://lfs.charhub.io/lfs/88/emotions/2/disappointment.png",
+              "disapproval": "https://lfs.charhub.io/lfs/88/emotions/2/disapproval.png",
+              "disgust": "https://lfs.charhub.io/lfs/88/emotions/2/disgust.png",
+              "embarrassment": "https://lfs.charhub.io/lfs/88/emotions/2/embarrassment.png",
+              "excitement": "https://lfs.charhub.io/lfs/88/emotions/2/excitement.png",
+              "fear": "https://lfs.charhub.io/lfs/88/emotions/2/fear.png",
+              "gratitude": "https://lfs.charhub.io/lfs/88/emotions/2/gratitude.png",
+              "grief": "https://lfs.charhub.io/lfs/88/emotions/2/grief.png",
+              "joy": "https://lfs.charhub.io/lfs/88/emotions/2/joy.png",
+              "love": "https://lfs.charhub.io/lfs/88/emotions/2/love.png",
+              "nervousness": "https://lfs.charhub.io/lfs/88/emotions/2/nervousness.png",
+              "optimism": "https://lfs.charhub.io/lfs/88/emotions/2/optimism.png",
+              "pride": "https://lfs.charhub.io/lfs/88/emotions/2/pride.png",
+              "realization": "https://lfs.charhub.io/lfs/88/emotions/2/realization.png",
+              "relief": "https://lfs.charhub.io/lfs/88/emotions/2/relief.png",
+              "remorse": "https://lfs.charhub.io/lfs/88/emotions/2/remorse.png",
+              "sadness": "https://lfs.charhub.io/lfs/88/emotions/2/sadness.png",
+              "surprise": "https://lfs.charhub.io/lfs/88/emotions/2/surprise.png",
+              "neutral": "https://lfs.charhub.io/lfs/88/emotions/2/neutral.png"
+            },
+            "alt_expressions": {
+              "home": {
+                "admiration": "https://lfs.charhub.io/lfs/88/emotions/2/admiration.png",
+                "amusement": "https://lfs.charhub.io/lfs/88/emotions/2/amusement.png",
+                "anger": "https://lfs.charhub.io/lfs/88/emotions/2/anger.png",
+                "annoyance": "https://lfs.charhub.io/lfs/88/emotions/2/annoyance.png",
+                "approval": "https://lfs.charhub.io/lfs/88/emotions/2/approval.png",
+                "caring": "https://lfs.charhub.io/lfs/88/emotions/2/caring.png",
+                "confusion": "https://lfs.charhub.io/lfs/88/emotions/2/confusion.png",
+                "curiosity": "https://lfs.charhub.io/lfs/88/emotions/2/curiosity.png",
+                "desire": "https://lfs.charhub.io/lfs/88/emotions/2/desire.png",
+                "disappointment": "https://lfs.charhub.io/lfs/88/emotions/2/disappointment.png",
+                "disapproval": "https://lfs.charhub.io/lfs/88/emotions/2/disapproval.png",
+                "disgust": "https://lfs.charhub.io/lfs/88/emotions/2/disgust.png",
+                "embarrassment": "https://lfs.charhub.io/lfs/88/emotions/2/embarrassment.png",
+                "excitement": "https://lfs.charhub.io/lfs/88/emotions/2/excitement.png",
+                "fear": "https://lfs.charhub.io/lfs/88/emotions/2/fear.png",
+                "gratitude": "https://lfs.charhub.io/lfs/88/emotions/2/gratitude.png",
+                "grief": "https://lfs.charhub.io/lfs/88/emotions/2/grief.png",
+                "joy": "https://lfs.charhub.io/lfs/88/emotions/2/joy.png",
+                "love": "https://lfs.charhub.io/lfs/88/emotions/2/love.png",
+                "nervousness": "https://lfs.charhub.io/lfs/88/emotions/2/nervousness.png",
+                "optimism": "https://lfs.charhub.io/lfs/88/emotions/2/optimism.png",
+                "pride": "https://lfs.charhub.io/lfs/88/emotions/2/pride.png",
+                "realization": "https://lfs.charhub.io/lfs/88/emotions/2/realization.png",
+                "relief": "https://lfs.charhub.io/lfs/88/emotions/2/relief.png",
+                "remorse": "https://lfs.charhub.io/lfs/88/emotions/2/remorse.png",
+                "sadness": "https://lfs.charhub.io/lfs/88/emotions/2/sadness.png",
+                "surprise": "https://lfs.charhub.io/lfs/88/emotions/2/surprise.png",
+                "neutral": "https://lfs.charhub.io/lfs/88/emotions/2/neutral.png"
+              },
+              "beach": {
+                "admiration": "https://lfs.charhub.io/lfs/88/emotions/2/admiration.png",
+                "amusement": "https://lfs.charhub.io/lfs/88/emotions/2/amusement.png",
+                "anger": "https://lfs.charhub.io/lfs/88/emotions/2/anger.png",
+                "annoyance": "https://lfs.charhub.io/lfs/88/emotions/2/annoyance.png",
+                "approval": "https://lfs.charhub.io/lfs/88/emotions/2/approval.png",
+                "caring": "https://lfs.charhub.io/lfs/88/emotions/2/caring.png",
+                "confusion": "https://lfs.charhub.io/lfs/88/emotions/2/confusion.png",
+                "curiosity": "https://lfs.charhub.io/lfs/88/emotions/2/curiosity.png",
+                "desire": "https://lfs.charhub.io/lfs/88/emotions/2/desire.png",
+                "disappointment": "https://lfs.charhub.io/lfs/88/emotions/2/disappointment.png",
+                "disapproval": "https://lfs.charhub.io/lfs/88/emotions/2/disapproval.png",
+                "disgust": "https://lfs.charhub.io/lfs/88/emotions/2/disgust.png",
+                "embarrassment": "https://lfs.charhub.io/lfs/88/emotions/2/embarrassment.png",
+                "excitement": "https://lfs.charhub.io/lfs/88/emotions/2/excitement.png",
+                "fear": "https://lfs.charhub.io/lfs/88/emotions/2/fear.png",
+                "gratitude": "https://lfs.charhub.io/lfs/88/emotions/2/gratitude.png",
+                "grief": "https://lfs.charhub.io/lfs/88/emotions/2/grief.png",
+                "joy": "https://lfs.charhub.io/lfs/88/emotions/2/joy.png",
+                "love": "https://lfs.charhub.io/lfs/88/emotions/2/love.png",
+                "nervousness": "https://lfs.charhub.io/lfs/88/emotions/2/nervousness.png",
+                "optimism": "https://lfs.charhub.io/lfs/88/emotions/2/optimism.png",
+                "pride": "https://lfs.charhub.io/lfs/88/emotions/2/pride.png",
+                "realization": "https://lfs.charhub.io/lfs/88/emotions/2/realization.png",
+                "relief": "https://lfs.charhub.io/lfs/88/emotions/2/relief.png",
+                "remorse": "https://lfs.charhub.io/lfs/88/emotions/2/remorse.png",
+                "sadness": "https://lfs.charhub.io/lfs/88/emotions/2/sadness.png",
+                "surprise": "https://lfs.charhub.io/lfs/88/emotions/2/surprise.png",
+                "neutral": "https://lfs.charhub.io/lfs/88/emotions/2/neutral.png"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "lastState": null,
+  "config": null
+}

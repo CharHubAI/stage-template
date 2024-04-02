@@ -1,0 +1,85 @@
+# All of these fields are optional, as is this file itself,
+#   in which case these values can be managed in the UI.
+
+# The name of the extension.
+project_name: "Extension Template"
+
+# A short tagline to show in search.
+tagline: "A base template for all extensions."
+
+# A longer explanation. Supports Markdown format.
+creator_notes: "# Extension Template for Chub
+
+This is a template extension that does nothing, to be used as a base
+when developing extensions. Please clone it [from GitHub](https://github.com/CharHubAI/extension-template) to use as a template.
+
+You'll need node@21.7.1 and yarn installed.
+Then, to get started:
+
+``` 
+git clone https://github.com/CharHubAI/extension-template
+cd extension-template
+yarn install
+yarn dev
+```
+
+The class you'll need to fill out and implement is in src/ChubExtension.tsx.
+
+When running locally, as there is no chat UI/running chat, src/TestRunner.tsx is run. This only runs in development.
+Please modify it to test whatever you need.
+
+This project uses GitHub actions to update the extension in Chub on 
+commits to the main branch. For your project to do this,
+you'll need to get an extension auth token from [the api](https://api.chub.ai/openapi/swagger#/User%20Account/create_projects_token_account_tokens_projects_post).
+
+Then in the GitHub project, go to Settings -> Secrets and Variables -> Actions ->
+Repository secrets -> New Repository Secret. Add the token with the name \"CHUB_AUTH_TOKEN\".
+  
+  The use of an IDE like Intellij is very strongly recommended.
+"
+
+# 'PUBLIC', 'PRIVATE', or 'UNLISTED'.
+visibility: 'PUBLIC'
+
+# Self-explanatory.
+tags:
+  - 'Extension'
+  - 'Admin'
+  - 'Template'
+  - 'Base'
+
+# Whether this REQUIRES a user-given configuration,
+#   versus being able to handle nulls/default values.
+needs_config: false
+# The schema of any user-supplied config.
+# If your extension requires a configuration but has no
+#   defined schema, it won't work.
+# Config schemas are a superset of JSON Schema format
+# @link https://json-schema.org
+config_schema:
+
+# Whether this is state-based in a history-sensitive way,
+#   rather than being able to work with latest-only data.
+# For example, this extension isn't history-based,
+#   as if it's added to an existing chat it will just
+#   display the 'neutral' expression until someone talks.
+# Think like inventory management may need a full history.
+needs_history: false
+# The schema of the state that you store.
+# This isn't needed even if you do store state,
+#   and is here more for future use cases.
+state_schema:
+
+# Whether to publish as 'Anonymous' instead of under your username.
+is_anonymous: false
+
+# Self-explanatory.
+ratings_disabled: false
+
+# This is here for future cases where ex. you need user secrets,
+#    but currently does nothing.
+permissions:
+
+# extension_id is automatically generated on push with a new project;
+#    you should not make or set this value.
+# github_path will be added if it does not exist. It is the URL of the repo.
