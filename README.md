@@ -3,6 +3,12 @@
 This is a template extension that does nothing, to be used as a base
 when developing extensions. Please clone it [from GitHub](https://github.com/CharHubAI/extension-template) to use as a template.
 
+# Latest Documentation
+
+The latest documentation is at [https://docs.chub.ai/docs/extensions](https://docs.chub.ai/docs/extensions).
+
+# Quickstart
+
 You'll need node@21.7.1 and yarn installed.
 Then, to get started:
 

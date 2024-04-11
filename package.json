@@ -3,7 +3,7 @@
   "private": false,
   "version": "0.0.0",
   "type": "module",
-  "license": "see LICENSE.txt",
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@typescript-eslint/parser": "^7.4.0",
-    "chub-extensions-ts": "^0.0.7",
+    "chub-extensions-ts": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
