@@ -34,10 +34,9 @@ Repository secrets -> New Repository Secret. Add the token with the name \"CHUB_
 # 'PUBLIC', 'PRIVATE', or 'UNLISTED'.
 visibility: 'PUBLIC'
 
-# 'ADJACENT', 'INLINE', or 'NONE'
+# 'ADJACENT' or 'NONE'
 # 'ADJACENT' is default. The frame will display on the side of the
 #   chat on desktop and above/in the top half of the chat on mobile.
-# 'INLINE' will display it inside the message box of the last message.
 # 'NONE' will not display, only run.
 position: 'ADJACENT'
 
