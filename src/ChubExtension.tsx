@@ -11,7 +11,7 @@ import {LoadResponse} from "chub-extensions-ts/dist/types/load";
   but not for things like history, which is best managed ephemerally
   in the internal state of the ChubExtension class itself.
  ***/
-type StateType = any;
+type MessageStateType = any;
 
 /***
  The type of the extension-specific configuration of this extension.
@@ -22,11 +22,29 @@ type StateType = any;
 type ConfigType = any;
 
 /***
+ The type that this extension persists chat initialization state in.
+ If there is any 'constant once initialized' static state unique to a chat,
+ like procedurally generated terrain that is only created ONCE and ONLY ONCE per chat,
+ it belongs here.
+ ***/
+type InitStateType = any;
+
+/***
+ The type that this extension persists dynamic chat-level state in.
+ This is for any state information unique to a chat,
+    that applies to ALL branches and paths such as clearing fog-of-war.
+ It is usually unlikely you will need this, and if it is used for message-level
+    data like player health then it will enter an inconsistent state whenever
+    they change branches or jump nodes. Use MessageStateType for that.
+ ***/
+type ChatStateType = any;
+
+/***
  A simple example class that implements the interfaces necessary for an Extension.
  If you want to rename it, be sure to modify App.js as well.
  @link https://github.com/CharHubAI/chub-extensions-ts/blob/main/src/types/extension.ts
  ***/
-export class ChubExtension implements Extension<StateType, ConfigType> {
+export class ChubExtension extends Extension<InitStateType, ChatStateType, MessageStateType, ConfigType> {
 
     /***
      A very simple example internal state. Can be anything.
@@ -35,7 +53,7 @@ export class ChubExtension implements Extension<StateType, ConfigType> {
      ***/
     myInternalState: {[key: string]: any};
 
-    constructor(data: InitialData<StateType, ConfigType>) {
+    constructor(data: InitialData<InitStateType, ChatStateType, MessageStateType, ConfigType>) {
         /***
          This is the first thing called in the extension,
          to create an instance of it.
@@ -43,18 +61,22 @@ export class ChubExtension implements Extension<StateType, ConfigType> {
          Character at @link https://github.com/CharHubAI/chub-extensions-ts/blob/main/src/types/character.ts
          User at @link https://github.com/CharHubAI/chub-extensions-ts/blob/main/src/types/user.ts
          ***/
+        super(data);
         const {
-            characters,     // @type:  { [key: string]: Character }
-            users,              // @type:  { [key: string]: User}
-            config,                             //  @type:  ConfigType
-            lastState                           //  @type:  StateType
+            characters,         // @type:  { [key: string]: Character }
+            users,                  // @type:  { [key: string]: User}
+            config,                                 //  @type:  ConfigType
+            messageState,                           //  @type:  MessageStateType
+            environment,                     // @type: Environment (which is a string)
+            initState,                             // @type: null | InitStateType
+            chatState                              // @type: null | ChatStateType
         } = data;
-        this.myInternalState = lastState != null ? lastState : {'someKey': 'someValue'};
+        this.myInternalState = messageState != null ? messageState : {'someKey': 'someValue'};
         this.myInternalState['numUsers'] = Object.keys(users).length;
         this.myInternalState['numChars'] = Object.keys(characters).length;
     }
 
-    async load(): Promise<Partial<LoadResponse>> {
+    async load(): Promise<Partial<LoadResponse<InitStateType, ChatStateType, MessageStateType>>> {
         /***
          This is called immediately after the constructor, in case there is some asynchronous code you need to
          run on instantiation.
@@ -66,23 +88,26 @@ export class ChubExtension implements Extension<StateType, ConfigType> {
               For example, if an extension displays expressions and no characters have an expression pack,
               there is no reason to run the extension, so it would return false here. ***/
             success: true,
-            /*** @type string | null @description an error message to show
+            /*** @type null | string @description an error message to show
              briefly at the top of the screen, if any. ***/
-            error: null
+            error: null,
+            initState: null,
+            chatState: null,
         };
     }
 
-    async setState(state: StateType): Promise<void> {
+    async setState(state: MessageStateType): Promise<void> {
         /***
          This can be called at any time, typically after a jump to a different place in the chat tree
-         or a swipe.
+         or a swipe. Note how neither InitState nor ChatState are given here. They are not for
+         state that is affected by swiping.
          ***/
         if (state != null) {
             this.myInternalState = {...this.myInternalState, ...state};
         }
     }
 
-    async beforePrompt(userMessage: Message): Promise<Partial<ExtensionResponse<StateType>>> {
+    async beforePrompt(userMessage: Message): Promise<Partial<ExtensionResponse<ChatStateType, MessageStateType>>> {
         /***
          This is called after someone presses 'send', but before anything is sent to the LLM.
          ***/
@@ -96,22 +121,29 @@ export class ChubExtension implements Extension<StateType, ConfigType> {
              @description Whether this is itself from another bot, ex. in a group chat. ***/
         } = userMessage;
         return {
-            /*** @type string | null @description A string to add to the
+            /*** @type null | string @description A string to add to the
              end of the final prompt sent to the LLM,
              but that isn't persisted. ***/
             extensionMessage: null,
-            /*** @type StateType | null @description the new state after the userMessage. ***/
-            state: {'someKey': this.myInternalState['someKey']},
-            /*** @type string | null @description If not null, the user's message itself is replaced
+            /*** @type MessageStateType | null @description the new state after the userMessage. ***/
+            messageState: {'someKey': this.myInternalState['someKey']},
+            /*** @type null | string @description If not null, the user's message itself is replaced
              with this value, both in what's sent to the LLM and in the database. ***/
             modifiedMessage: null,
-            /*** @type string | null @description an error message to show
+            /*** @type null | string @description A system message to append to the end of this message.
+             This is unique in that it shows up in the chat log and is sent to the LLM in subsequent messages,
+             but it's shown as coming from a system user and not any member of the chat. If you have things like
+             computed stat blocks that you want to show in the log, but don't want the LLM to start trying to
+             mimic/output them, they belong here. ***/
+            systemMessage: null,
+            /*** @type null | string @description an error message to show
              briefly at the top of the screen, if any. ***/
-            error: null
+            error: null,
+            chatState: null,
         };
     }
 
-    async afterResponse(botMessage: Message): Promise<Partial<ExtensionResponse<StateType>>> {
+    async afterResponse(botMessage: Message): Promise<Partial<ExtensionResponse<ChatStateType, MessageStateType>>> {
         /***
          This is called immediately after a response from the LLM.
          ***/
@@ -125,18 +157,20 @@ export class ChubExtension implements Extension<StateType, ConfigType> {
              @description Whether this is from a bot, conceivably always true. ***/
         } = botMessage;
         return {
-            /*** @type string | null @description A string to add to the
+            /*** @type null | string @description A string to add to the
              end of the final prompt sent to the LLM,
              but that isn't persisted. ***/
             extensionMessage: null,
-            /*** @type StateType | null @description the new state after the botMessage. ***/
-            state: {'someKey': this.myInternalState['someKey']},
-            /*** @type string | null @description If not null, the bot's response itself is replaced
+            /*** @type MessageStateType | null @description the new state after the botMessage. ***/
+            messageState: {'someKey': this.myInternalState['someKey']},
+            /*** @type null | string @description If not null, the bot's response itself is replaced
              with this value, both in what's sent to the LLM subsequently and in the database. ***/
             modifiedMessage: null,
-            /*** @type string | null @description an error message to show
+            /*** @type null | string @description an error message to show
              briefly at the top of the screen, if any. ***/
-            error: null
+            error: null,
+            systemMessage: null,
+            chatState: null
         };
     }
 
@@ -144,8 +178,16 @@ export class ChubExtension implements Extension<StateType, ConfigType> {
     render(): ReactElement {
         /***
          There should be no "work" done here. Just returning the React element to display.
-         If you're unfamiliar with React, I've heard good things about
-         @https://scrimba.com/learn/learnreact but haven't personally watched/used it.
+         If you're unfamiliar with React and prefer video, I've heard good things about
+         @link https://scrimba.com/learn/learnreact but haven't personally watched/used it.
+
+         For creating 3D and game components, react-three-fiber
+           @link https://docs.pmnd.rs/react-three-fiber/getting-started/introduction
+           and the associated ecosystem of libraries are quite good and intuitive.
+
+         Cuberun is a good example of a game built with them.
+           @link https://github.com/akarlsten/cuberun (Source)
+           @link https://cuberun.adamkarlsten.com/ (Demo)
          ***/
         return <div style={{
             width: '100vw',

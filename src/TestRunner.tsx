@@ -5,16 +5,16 @@ import {DEFAULT_INITIAL, DEFAULT_MESSAGE, Extension, ExtensionResponse, InitialD
 // Modify this JSON to include whatever character/user information you want to test.
 import InitData from './assets/test-init.json';
 
-export interface TestExtensionRunnerProps<ExtensionType extends Extension<StateType, ConfigType>, StateType, ConfigType> {
-    factory: (data: InitialData<StateType, ConfigType>) => ExtensionType;
+export interface TestExtensionRunnerProps<ExtensionType extends Extension<InitStateType, ChatStateType, MessageStateType, ConfigType>, InitStateType, ChatStateType, MessageStateType, ConfigType> {
+    factory: (data: InitialData<InitStateType, ChatStateType, MessageStateType, ConfigType>) => ExtensionType;
 }
 
 /***
  This is a testing class for running an extension locally when testing,
     outside the context of an active chat. See runTests() below for the main idea.
  ***/
-export const TestExtensionRunner = <ExtensionType extends Extension<StateType, ConfigType>,
-    StateType, ConfigType>({ factory }: TestExtensionRunnerProps<ExtensionType, StateType, ConfigType>) => {
+export const TestExtensionRunner = <ExtensionType extends Extension<InitStateType, ChatStateType, MessageStateType, ConfigType>,
+    InitStateType, ChatStateType, MessageStateType, ConfigType>({ factory }: TestExtensionRunnerProps<ExtensionType, InitStateType, ChatStateType, MessageStateType, ConfigType>) => {
 
     // You may need to add a @ts-ignore here,
     //     as the linter doesn't always like the idea of reading types arbitrarily from files
@@ -39,7 +39,7 @@ export const TestExtensionRunner = <ExtensionType extends Extension<StateType, C
         await extension.setState({someKey: 'A new value, even!'});
         refresh();
 
-        const beforePromptResponse: Partial<ExtensionResponse<StateType>> = await extension.beforePrompt({
+        const beforePromptResponse: Partial<ExtensionResponse<ChatStateType, MessageStateType>> = await extension.beforePrompt({
             ...DEFAULT_MESSAGE, ...{
                 anonymizedId: "0",
                 content: "Hello, this is what happens when a human sends a message, but before it's sent to the model.",
@@ -62,7 +62,7 @@ export const TestExtensionRunner = <ExtensionType extends Extension<StateType, C
             where relevant in your tests prevents a version bump
             from breaking your test runner in many cases.
          ***/
-        const afterPromptResponse: Partial<ExtensionResponse<StateType>> = await extension.afterResponse({
+        const afterPromptResponse: Partial<ExtensionResponse<ChatStateType, MessageStateType>> = await extension.afterResponse({
             ...DEFAULT_MESSAGE, ...{
             promptForId: null,
             anonymizedId: "2",
@@ -71,7 +71,7 @@ export const TestExtensionRunner = <ExtensionType extends Extension<StateType, C
         console.assert(afterPromptResponse.error == null);
         refresh();
 
-        const afterDelayedThing: Partial<ExtensionResponse<StateType>> = await delayedTest(() => extension.beforePrompt({
+        const afterDelayedThing: Partial<ExtensionResponse<ChatStateType, MessageStateType>> = await delayedTest(() => extension.beforePrompt({
             ...DEFAULT_MESSAGE, ...{
             anonymizedId: "0", content: "Hello, and now the human is prompting again.", isBot: false, promptForId: null
         }}), 5);
