@@ -36,7 +36,7 @@ jobs:
         run: |
           mkdir -p public/       
           touch public/chub_meta.yaml  
-          if grep -q "github_path:" public/chub_meta.yaml; then
+          if grep -q "^github_path:" public/chub_meta.yaml; then
             echo "Repo path already in metadata file."
           else
             echo "Writing github path 'https://github.com/${{ github.repository }}' to metadata file."
