@@ -40,7 +40,7 @@ jobs:
             echo "Repo path already in metadata file."
           else
             echo "Writing github path 'https://github.com/${{ github.repository }}' to metadata file."
-            echo "github_path: 'https://github.com/${{ github.repository }}'" >> public/chub_meta.yaml
+            echo "\ngithub_path: 'https://github.com/${{ github.repository }}'\n" >> public/chub_meta.yaml
             git config --local user.email "action@github.com"
             git config --local user.name "GitHub Action"
             git add public/chub_meta.yaml
@@ -60,7 +60,7 @@ jobs:
                   echo "Extension ID creation failed; is your CHUB_AUTH_TOKEN secret set for this project?"
                   exit 1
                 fi
-                echo "extension_id: '${EXTENSION_ID}'" >> public/chub_meta.yaml
+                echo "\nextension_id: '${EXTENSION_ID}'\n" >> public/chub_meta.yaml
                 git config --local user.email "action@github.com"
                 git config --local user.name "GitHub Action"
                 git add public/chub_meta.yaml
