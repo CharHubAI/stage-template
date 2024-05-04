@@ -84,3 +84,6 @@ permissions:
 # github_path will be added if it does not exist. It is the URL of the repo.
 
 
+
+github_path: 'https://github.com/CharHubAI/extension-template'
+
