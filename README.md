@@ -7,7 +7,7 @@ when developing extensions. Please clone it [from GitHub](https://github.com/Cha
 
 # Overview
 
-If you're familiar with React and/or TypeScript, you can write an extension yourself.
+A Generative Extension is a software component written by other people that can be used within a chat with a language model. They are meant to add functionality like expression packs (showing a character's emotional state with a set of images), UIs for mini-games, special prompt handling, or even interacting with third-party APIs. If you're familiar with React and/or TypeScript, you can write an extension yourself.
 
 ### Extension Use Cases
 - Creating a UI for a world, character, or setting
