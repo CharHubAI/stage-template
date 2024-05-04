@@ -2,22 +2,29 @@ Copyright Chub AI 2024, All Rights Reserved.
 
 Section 0 -- Modifications to Definitions
 =======================================================================
-These definitions modify and override any subsequent listing in this document.
+These definitions modify and override any subsequent 
+listing in this document.
 
 NonCommercial: 
-For the purposes of this document, NonCommercial means not in any way intended for or directed towards
-     commercial advantage or monetary compensation, with no substantive relationship to any Commercial Entity. 
+For the purposes of this document, NonCommercial means not
+     in any way intended for or directed toward commercial
+     advantage or monetary compensation, with no substantive 
+     relationship to any Commercial Entity. 
 
 Commercial Entity:
-For the purposes of this document, a Commercial Entity is any organization, project, or product that is
-     either directly involved with commercial activity, or whose controlling organization or individuals,
-     or any subset of whose controlling organizations or individuals,
-     or any parent, subsidiary, or associated organization or product of any such entities,
-     is involved in commercial activities. 
+For the purposes of this document, a Commercial Entity is 
+     any organization, project, or product that is either 
+     directly involved with commercial activity, or whose 
+     controlling organization or individuals, or any subset 
+     of whose controlling organizations or individuals, or 
+     any parent, subsidiary, or associated organization or 
+     product of any such entities, is involved in 
+     commercial activities. 
 
-In effect: this project and associated projects
-     may not be used by noncommercial-in-name-only organizations conducting commercial
-     activities through a series of interrelated entities.
+In effect: this project and associated projects may not be 
+     used by noncommercial-in-name-only organizations 
+     conducting commercial activities through a series of 
+     interrelated entities.
 
 Attribution-NonCommercial-ShareAlike 4.0 International
 
