@@ -83,16 +83,3 @@ permissions:
 #    you should not make or set this value.
 # github_path will be added if it does not exist. It is the URL of the repo.
 
-
-
-
-
-
-
-
-
-github_path: 'https://github.com/CharHubAI/extension-template'
-
-
-extension_id: 'extension-template-6a94b2e30737'
-
