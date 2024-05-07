@@ -24,6 +24,12 @@ A Generative Extension is a software component written by other people that can 
 - **Actively Developed Platform:** This is just the beginning. Scheduling, full VR/AR support, non-React implementations, and more are incoming.
 
 
+# Meta -- But Why?
+
+As far as why this has been created, I’m trying to go where the puck is going instead of where it is, and I think there’s a need for something like itch.io for generative AI where (1) developers don’t have to worry about integrations and devops and (2) there’s an audience of people that are already explicitly on the AI side of the pro/anti discussion.
+
+This is basically in the early stages of “do developers want this?” with a fraction of what I want to do with it if the answer is yes. The current license is to prevent competing platforms, and if it turns out to be something there is strong interest in it would be going the way of itch where it’s not just commercial use allowed but explicitly a platform for indies to monetize through.
+
 # Latest Documentation
 
 The latest documentation is at [https://docs.chub.ai/docs/extensions](https://docs.chub.ai/docs/extensions).
