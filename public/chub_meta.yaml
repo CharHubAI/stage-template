@@ -1,73 +1,65 @@
 # All of these fields are optional, as is this file itself,
 #   in which case these values can be managed in the UI.
 
-# The name of the extension.
-project_name: "Extension Template"
+# The name of the stage.
+project_name: "Stage Template"
 
 # A short tagline to show in search.
-tagline: "A base template for all extensions."
-
-# A longer explanation. Supports Markdown format.
-creator_notes: "This is a template extension that does nothing, to be used as a base\nwhen developing extensions. Please clone it [from GitHub](https://github.com/CharHubAI/extension-template) to use as a template.\n\nYou'll need node@21.7.1 and yarn installed.\nThen, to get started:\n\n
-```\n 
-git clone https://github.com/CharHubAI/extension-template\n
-cd extension-template\n
-yarn install\n
-yarn dev\n
-```\n
-\n
-The class you'll need to fill out and implement is in src/ChubExtension.tsx.\n
-\n
-When running locally, as there is no chat UI/running chat, src/TestRunner.tsx is run. This only runs in development.\n
-Please modify it to test whatever you need.\n
-\n
-This project uses GitHub actions to update the extension in Chub on \n
-commits to the main branch. For your project to do this,\n
-you'll need to get an extension auth token from [the api](https://api.chub.ai/openapi/swagger#/User%20Account/create_projects_token_account_tokens_projects_post).\n
-\n
-Then in the GitHub project, go to Settings -> Secrets and Variables -> Actions ->\n
-Repository secrets -> New Repository Secret. Add the token with the name \"CHUB_AUTH_TOKEN\".\n
-  \n
-  The use of an IDE like Intellij is very strongly recommended.
-"
+tagline: "A base template for all stages."
 
 # 'PUBLIC', 'PRIVATE', or 'UNLISTED'.
 visibility: 'PUBLIC'
 
-# 'ADJACENT' or 'NONE'
+# 'ADJACENT' | 'NONE' | 'COVER' | 'FULLSCREEN'
 # 'ADJACENT' is default. The frame will display on the side of the
 #   chat on desktop and above/in the top half of the chat on mobile.
 # 'NONE' will not display, only run.
+# 'COVER' will, indeed, cover the chat history completely,
+#   but leave the text input box.
+# 'FULLSCREEN' will make nothing below the header bar
+#   show except for your stage.
 position: 'ADJACENT'
 
 # Self-explanatory.
 tags:
-  - 'Extension'
+  - 'Stage'
   - 'Admin'
   - 'Template'
   - 'Base'
 
-# Whether this REQUIRES a user-given configuration,
-#   versus being able to handle nulls/default values.
-needs_config: false
 # The schema of any user-supplied config.
-# If your extension requires a configuration but has no
+# If your stage requires a configuration but has no
 #   defined schema, it won't work.
-# Config schemas are a superset of JSON Schema format
-# @link https://json-schema.org
 config_schema:
+  type: object
+  properties:
+    health:
+      type: integer
+      default: 100
 
-# Whether this is state-based in a history-sensitive way,
-#   rather than being able to work with latest-only data.
-# For example, this extension isn't history-based,
-#   as if it's added to an existing chat it will just
-#   display the 'neutral' expression until someone talks.
-# Think like inventory management may need a full history.
-needs_history: false
 # The schema of the state that you store.
 # This isn't needed even if you do store state,
-#   and is here more for future use cases.
+#   and is here more for future use cases to
+#   optimize storage.
 state_schema:
+  init:
+    type: object
+    properties:
+      grid:
+        type: string
+  message:
+    type: object
+    properties:
+      angry:
+        type: boolean
+        default: true
+  chat:
+    type: object
+    properties:
+      visited:
+        type: array
+        items:
+          type: integer
 
 # Whether to publish as 'Anonymous' instead of under your username.
 is_anonymous: false

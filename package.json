@@ -1,5 +1,5 @@
 {
-  "name": "extension-template",
+  "name": "@chub-ai/stage-template",
   "private": false,
   "version": "0.0.0",
   "type": "module",
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@typescript-eslint/parser": "^7.4.0",
-    "chub-extensions-ts": "0.2.5",
+    "@chub-ai/stages-ts": "0.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
