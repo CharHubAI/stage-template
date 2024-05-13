@@ -1,20 +1,20 @@
 import {ReactElement} from "react";
-import {Extension, ExtensionResponse, InitialData, Message} from "chub-extensions-ts";
-import {LoadResponse} from "chub-extensions-ts/dist/types/load";
+import {StageBase, StageResponse, InitialData, Message} from "@chub-ai/stages-ts";
+import {LoadResponse} from "@chub-ai/stages-ts/dist/types/load";
 
 /***
- The type that this extension persists message-level state in.
+ The type that this stage persists message-level state in.
  This is primarily for readability, and not enforced.
 
  @description This type is saved in the database after each message,
   which makes it ideal for storing things like positions and statuses,
   but not for things like history, which is best managed ephemerally
-  in the internal state of the ChubExtension class itself.
+  in the internal state of the Stage class itself.
  ***/
 type MessageStateType = any;
 
 /***
- The type of the extension-specific configuration of this extension.
+ The type of the stage-specific configuration of this stage.
 
  @description This is for things you want people to be able to configure,
   like background color.
@@ -22,7 +22,7 @@ type MessageStateType = any;
 type ConfigType = any;
 
 /***
- The type that this extension persists chat initialization state in.
+ The type that this stage persists chat initialization state in.
  If there is any 'constant once initialized' static state unique to a chat,
  like procedurally generated terrain that is only created ONCE and ONLY ONCE per chat,
  it belongs here.
@@ -30,7 +30,7 @@ type ConfigType = any;
 type InitStateType = any;
 
 /***
- The type that this extension persists dynamic chat-level state in.
+ The type that this stage persists dynamic chat-level state in.
  This is for any state information unique to a chat,
     that applies to ALL branches and paths such as clearing fog-of-war.
  It is usually unlikely you will need this, and if it is used for message-level
@@ -40,11 +40,11 @@ type InitStateType = any;
 type ChatStateType = any;
 
 /***
- A simple example class that implements the interfaces necessary for an Extension.
+ A simple example class that implements the interfaces necessary for a Stage.
  If you want to rename it, be sure to modify App.js as well.
- @link https://github.com/CharHubAI/chub-extensions-ts/blob/main/src/types/extension.ts
+ @link https://github.com/CharHubAI/chub-stages-ts/blob/main/src/types/stage.ts
  ***/
-export class ChubExtension extends Extension<InitStateType, ChatStateType, MessageStateType, ConfigType> {
+export class Stage extends StageBase<InitStateType, ChatStateType, MessageStateType, ConfigType> {
 
     /***
      A very simple example internal state. Can be anything.
@@ -55,11 +55,11 @@ export class ChubExtension extends Extension<InitStateType, ChatStateType, Messa
 
     constructor(data: InitialData<InitStateType, ChatStateType, MessageStateType, ConfigType>) {
         /***
-         This is the first thing called in the extension,
+         This is the first thing called in the stage,
          to create an instance of it.
-         The definition of InitialData is at @link https://github.com/CharHubAI/chub-extensions-ts/blob/main/src/types/initial.ts
-         Character at @link https://github.com/CharHubAI/chub-extensions-ts/blob/main/src/types/character.ts
-         User at @link https://github.com/CharHubAI/chub-extensions-ts/blob/main/src/types/user.ts
+         The definition of InitialData is at @link https://github.com/CharHubAI/chub-stages-ts/blob/main/src/types/initial.ts
+         Character at @link https://github.com/CharHubAI/chub-stages-ts/blob/main/src/types/character.ts
+         User at @link https://github.com/CharHubAI/chub-stages-ts/blob/main/src/types/user.ts
          ***/
         super(data);
         const {
@@ -84,9 +84,9 @@ export class ChubExtension extends Extension<InitStateType, ChatStateType, Messa
         return {
             /*** @type boolean @default null
              @description The 'success' boolean returned should be false IFF (if and only if), some condition is met that means
-              the extension shouldn't be run at all and the iFrame can be closed/removed.
-              For example, if an extension displays expressions and no characters have an expression pack,
-              there is no reason to run the extension, so it would return false here. ***/
+              the stage shouldn't be run at all and the iFrame can be closed/removed.
+              For example, if a stage displays expressions and no characters have an expression pack,
+              there is no reason to run the stage, so it would return false here. ***/
             success: true,
             /*** @type null | string @description an error message to show
              briefly at the top of the screen, if any. ***/
@@ -107,7 +107,7 @@ export class ChubExtension extends Extension<InitStateType, ChatStateType, Messa
         }
     }
 
-    async beforePrompt(userMessage: Message): Promise<Partial<ExtensionResponse<ChatStateType, MessageStateType>>> {
+    async beforePrompt(userMessage: Message): Promise<Partial<StageResponse<ChatStateType, MessageStateType>>> {
         /***
          This is called after someone presses 'send', but before anything is sent to the LLM.
          ***/
@@ -124,7 +124,7 @@ export class ChubExtension extends Extension<InitStateType, ChatStateType, Messa
             /*** @type null | string @description A string to add to the
              end of the final prompt sent to the LLM,
              but that isn't persisted. ***/
-            extensionMessage: null,
+            stageDirections: null,
             /*** @type MessageStateType | null @description the new state after the userMessage. ***/
             messageState: {'someKey': this.myInternalState['someKey']},
             /*** @type null | string @description If not null, the user's message itself is replaced
@@ -143,7 +143,7 @@ export class ChubExtension extends Extension<InitStateType, ChatStateType, Messa
         };
     }
 
-    async afterResponse(botMessage: Message): Promise<Partial<ExtensionResponse<ChatStateType, MessageStateType>>> {
+    async afterResponse(botMessage: Message): Promise<Partial<StageResponse<ChatStateType, MessageStateType>>> {
         /***
          This is called immediately after a response from the LLM.
          ***/
@@ -160,7 +160,7 @@ export class ChubExtension extends Extension<InitStateType, ChatStateType, Messa
             /*** @type null | string @description A string to add to the
              end of the final prompt sent to the LLM,
              but that isn't persisted. ***/
-            extensionMessage: null,
+            stageDirections: null,
             /*** @type MessageStateType | null @description the new state after the botMessage. ***/
             messageState: {'someKey': this.myInternalState['someKey']},
             /*** @type null | string @description If not null, the bot's response itself is replaced
@@ -195,7 +195,7 @@ export class ChubExtension extends Extension<InitStateType, ChatStateType, Messa
             display: 'grid',
             alignItems: 'stretch'
         }}>
-            <div>Hello World! I'm an empty extension! With {this.myInternalState['someKey']}!</div>
+            <div>Hello World! I'm an empty stage! With {this.myInternalState['someKey']}!</div>
             <div>There is/are/were {this.myInternalState['numChars']} character(s)
                 and {this.myInternalState['numUsers']} human(s) here.
             </div>

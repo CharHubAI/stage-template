@@ -1,0 +1,17 @@
+# If you want to (A) have your extension run without characters, or
+#         (B) Run with a predefined set of characters, you can set that up here.
+
+# Some name to display in search.
+# name: My Scenario
+
+# If you want your scenario to run without characters, have a character array like this:
+# characters:
+#  - 'self'
+
+# If you want to run with predefined characters, you can give them instead:
+# characters:
+#   - 88      # You can give their number id as copied from the drop-down, or
+#   - characters/BartlebyTheScrivener/detailed-example-character    # Its full URL path, or
+#   - @characters/susan.yaml     # A relative path from this public folder to a definition file
+
+# scenario: "The scenario text to override all character(s)' scenario field with, if any."

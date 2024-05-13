@@ -1,10 +1,12 @@
-name: Deploy Built Extension
+name: Deploy Built Stage
 
 on:
   push:
     branches:
       - main  # Or any branch you use for releases
       - master
+    tags:
+      - 'v*'
 
 permissions:
   contents: write
@@ -29,50 +31,59 @@ jobs:
              exit 1
           fi
 
-      - name: Get or Make Extension ID
+      - name: Get or Make Stage ID
         env:
           CHUB_AUTH_TOKEN: ${{ secrets.CHUB_AUTH_TOKEN }}
-          EXTENSION_ID: ${{ secrets.EXTENSION_ID }}
+          STAGE_ID: ${{ secrets.STAGE_ID }}
         run: |
           mkdir -p public/       
           touch public/chub_meta.yaml  
           if grep -q "^github_path:" public/chub_meta.yaml; then
             echo "Repo path already in metadata file."
           else
-            echo "Writing github path 'https://github.com/${{ github.repository }}' to metadata file."
-            echo -e "\ngithub_path: 'https://github.com/${{ github.repository }}'\n" >> public/chub_meta.yaml
-            git config --local user.email "action@github.com"
-            git config --local user.name "GitHub Action"
-            git add public/chub_meta.yaml
-            git commit -m "Add github_path to chub_meta.yaml" || true
-            git push
+            if ["${{ github.repository }}" == "CharHubAI/stage-template"]; then
+              echo "Not saving repo name for template project"
+            else
+              echo "Writing github path 'https://github.com/${{ github.repository }}' to metadata file."
+              echo -e "\ngithub_path: 'https://github.com/${{ github.repository }}'\n" >> public/chub_meta.yaml
+              git config --local user.email "action@github.com"
+              git config --local user.name "GitHub Action"
+              git add public/chub_meta.yaml
+              git commit -m "Add github_path to chub_meta.yaml" || true
+              git push
+            fi
           fi
-          if [ "${{ secrets.EXTENSION_ID }}" == "" ]; then
-             echo "Secret EXTENSION_ID does not exist; attempting to read from file"
-             EXTENSION_ID=$(grep '^extension_id:' public/chub_meta.yaml | cut -d ':' -f2 | tr -d " '\"")
-             if [ "${EXTENSION_ID}" == "" ]; then
-                echo "Extension ID not present in public/chub_meta.yaml extension_id field either. Creating new project."
-                sudo apt-get install jq
-                EXTENSION_ID=""
-                curl -H "CH-API-KEY: ${{ secrets.CHUB_AUTH_TOKEN }}" -H "Content-Type: application/json" --request POST --data '{"name":"${{ github.event.repository.name }}"}'  https://api.chub.ai/extensions  -o creation.json
-                EXTENSION_ID=$(jq -r '.id_v2' creation.json)
-                if [ "${EXTENSION_ID}" == "" ] || [ "${EXTENSION_ID}" == "null" ]; then
-                  echo "Extension ID creation failed; is your CHUB_AUTH_TOKEN secret set for this project?"
-                  exit 1
+          if [ "${{ secrets.STAGE_ID }}" == "" ]; then
+             echo "Secret STAGE_ID does not exist; attempting to read from file"
+             STAGE_ID=$(grep '^extension_id:' public/chub_meta.yaml | cut -d ':' -f2 | tr -d " '\"")
+             if [ "${STAGE_ID}" == ""  ]; then
+                if ["${{ github.repository }}" == "CharHubAI/stage-template"]; then
+                  echo "Not making ext id for template project"
+                  STAGE_ID="extension-template-5523da8cf7de"
+                else
+                  echo "Extension ID not present in public/chub_meta.yaml extension_id field either. Creating new project."
+                  sudo apt-get install jq
+                  STAGE_ID=""
+                  curl -H "CH-API-KEY: ${{ secrets.CHUB_AUTH_TOKEN }}" -H "Content-Type: application/json" --request POST --data '{"name":"${{ github.event.repository.name }}"}'  https://api.chub.ai/extensions  -o creation.json
+                  STAGE_ID=$(jq -r '.id_v2' creation.json)
+                  if [ "${STAGE_ID}" == "" ] || [ "${STAGE_ID}" == "null" ]; then
+                    echo "Extension ID creation failed; is your CHUB_AUTH_TOKEN secret set for this project?"
+                    exit 1
+                  fi
+                  echo -e "\nextension_id: '${STAGE_ID}'\n" >> public/chub_meta.yaml
+                  git config --local user.email "action@github.com"
+                  git config --local user.name "GitHub Action"
+                  git add public/chub_meta.yaml
+                  git commit -m "Add new Extension ID to chub_meta.yaml" || true
+                  git push
                 fi
-                echo -e "\nextension_id: '${EXTENSION_ID}'\n" >> public/chub_meta.yaml
-                git config --local user.email "action@github.com"
-                git config --local user.name "GitHub Action"
-                git add public/chub_meta.yaml
-                git commit -m "Add new Extension ID to chub_meta.yaml" || true
-                git push
              else
                 echo "Extension ID found in public/chub_meta.yaml."
              fi
           else
-             EXTENSION_ID=${{ secrets.EXTENSION_ID }}
+             STAGE_ID=${{ secrets.STAGE_ID }}
           fi
-          echo "EXTENSION_ID=${EXTENSION_ID}" >> $GITHUB_ENV
+          echo "STAGE_ID=${STAGE_ID}" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: yarn install
@@ -87,5 +98,25 @@ jobs:
         env:
           CHUB_AUTH_TOKEN: ${{ secrets.CHUB_AUTH_TOKEN }}
         run: |    
-          curl -H "CH-API-KEY: ${{ secrets.CHUB_AUTH_TOKEN }}" -F "file=@build.zip" https://api.chub.ai/extension/${{ env.EXTENSION_ID }}/upload
+          curl -H "CH-API-KEY: ${{ secrets.CHUB_AUTH_TOKEN }}" -F "file=@build.zip" https://api.chub.ai/extension/${{ env.STAGE_ID }}/upload
 
+      - name: Setup .npmrc
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+        run: |
+          git config --global user.email "bot@chub.ai"
+          git config --global user.name "Chub Bot"
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
+
+      - name: Extract version from tag
+        id: get_version
+        if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+        run: echo "::set-output name=VERSION::${GITHUB_REF#refs/tags/v}"
+        # Assumes tag is of form v1.0.0, strips the 'v'
+
+      - name: Update package.json version
+        run: yarn pack && yarn publish --new-version ${{ steps.get_version.outputs.VERSION }}
+        if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
