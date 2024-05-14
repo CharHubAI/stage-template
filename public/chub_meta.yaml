@@ -75,9 +75,3 @@ state_schema:
 #    you should not make or set this value.
 # github_path will be added if it does not exist. It is the URL of the repo.
 
-
-github_path: 'https://github.com/CharHubAI/stage-template'
-
-
-extension_id: 'stage-template-96afc7ff24f2'
-
