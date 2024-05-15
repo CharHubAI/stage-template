@@ -27,3 +27,5 @@ dist-ssr
 *.zip
 dist/
 creation.json
+*.trash
+*.tgz

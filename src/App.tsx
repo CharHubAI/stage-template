@@ -1,6 +1,6 @@
 import {ReactRunner} from "@chub-ai/stages-ts";
-import {Stage} from "./Stage.tsx";
-import {TestStageRunner} from "./TestRunner.tsx";
+import {Stage} from "./Stage";
+import {TestStageRunner} from "./TestRunner";
 
 function App() {
   const isDev = import.meta.env.MODE === 'development';

@@ -1,4 +1,4 @@
-import {Stage} from "./Stage.tsx";
+import {Stage} from "./Stage";
 import {useEffect, useState} from "react";
 import {DEFAULT_INITIAL, StageBase, InitialData} from "@chub-ai/stages-ts";
 

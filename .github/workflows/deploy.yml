@@ -32,6 +32,7 @@ jobs:
           fi
 
       - name: Get or Make Stage ID
+        if: ${{ !contains(github.repository, 'template') }}
         env:
           CHUB_AUTH_TOKEN: ${{ secrets.CHUB_AUTH_TOKEN }}
           STAGE_ID: ${{ secrets.STAGE_ID }}
@@ -84,7 +85,24 @@ jobs:
              STAGE_ID=${{ secrets.STAGE_ID }}
           fi
           echo "STAGE_ID=${STAGE_ID}" >> $GITHUB_ENV
-
+      - name: Char UUIDGen
+        if: ${{ !contains(github.repository, 'template') }}
+        run: |
+          sudo apt-get install uuid-runtime
+          for file in public/characters/*.yaml; do
+            if grep -q 'project_uuid:' "$file"; then
+              echo "project has uuid."
+            else
+              uuid=$(uuidgen)
+              echo -e "\nproject_uuid: $uuid\n" >> "$file"
+              echo "Added project_uuid to $file"
+              git config --local user.email "action@github.com"
+              git config --local user.name "GitHub Action"
+              git add $file
+              git commit -m "Add project_uuid to YAML file"
+              git push
+            fi
+          done
       - name: Install dependencies
         run: yarn install
 
@@ -95,6 +113,7 @@ jobs:
         run: cd dist && zip -r ../build.zip * && cd ../
 
       - name: Upload the build
+        if: ${{ !contains(github.repository, 'template') }}
         env:
           CHUB_AUTH_TOKEN: ${{ secrets.CHUB_AUTH_TOKEN }}
         run: |    
@@ -116,7 +135,7 @@ jobs:
         # Assumes tag is of form v1.0.0, strips the 'v'
 
       - name: Update package.json version
-        run: yarn pack && yarn publish --new-version ${{ steps.get_version.outputs.VERSION }}
+        run: tsc && yarn pack && yarn publish --new-version ${{ steps.get_version.outputs.VERSION }}
         if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
