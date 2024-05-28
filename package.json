@@ -3,6 +3,11 @@
   "private": false,
   "version": "0.0.0",
   "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "license": "UNLICENSED",
   "scripts": {
     "dev": "vite",
@@ -11,10 +16,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chub-ai/stages-ts": "^0.3.7",
     "@typescript-eslint/parser": "^7.4.0",
-    "@chub-ai/stages-ts": "0.3.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "vite-plugin-dts": "^3.9.1"
   },
   "engines": {
     "node": "21.7.1"
@@ -29,5 +35,11 @@
     "sass": "^1.72.0",
     "typescript": "^5.2.2",
     "vite": "^5.2.0"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.umd.cjs"
+    }
   }
 }

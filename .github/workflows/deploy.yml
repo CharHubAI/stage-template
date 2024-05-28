@@ -135,7 +135,7 @@ jobs:
         # Assumes tag is of form v1.0.0, strips the 'v'
 
       - name: Update package.json version
-        run: tsc && yarn pack && yarn publish --new-version ${{ steps.get_version.outputs.VERSION }}
+        run: yarn publish --new-version ${{ steps.get_version.outputs.VERSION }}
         if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
