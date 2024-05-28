@@ -10,23 +10,5 @@ export default defineConfig({
         staticImport: true,
         rollupTypes: true,
         insertTypesEntry: true
-    })],
-    build: {
-        lib: {
-            entry:[ './src/index.ts'],
-            name: "index",
-            fileName: 'index'
-        },
-        rollupOptions: {
-            external: ['react'],
-            output: {
-                globals: {
-                    react: 'React',
-                },
-            },
-            input: {
-                main: "index.html"
-            },
-        },
-    }
+    })]
 })
